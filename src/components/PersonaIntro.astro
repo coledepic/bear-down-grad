@@ -11,14 +11,19 @@ interface Props {
    * full-screen background doesn't crop them out on very tall or very wide viewports.
    * Defaults to plain center. */
   photoFocus?: string;
+  /** Extra zoom multiplier on top of the cover crop (1 = no zoom), scaled around
+   * photoFocus. Crops out more of the surrounding background so the subject reads
+   * as clearly centered/framed rather than a small figure in a busy backdrop. */
+  photoZoom?: number;
 }
-const { persona, name, degree, line, photo, photoFocus = 'center' } = Astro.props;
+const { persona, name, degree, line, photo, photoFocus = 'center', photoZoom = 1 } = Astro.props;
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const photoStyle = `background-image:url('${base}/images/${photo}');background-position:${photoFocus};transform:scale(${photoZoom});transform-origin:${photoFocus}`;
 ---
 <!-- Hidden by default; JS opens it. That way a no-JS visitor just gets the site
      rather than an overlay they can't dismiss. -->
 <div class="intro" id="intro" data-persona={persona} role="dialog" aria-modal="true" aria-labelledby="intro-name">
-  <div class="intro__photo" style={`background-image:url('${base}/images/${photo}');background-position:${photoFocus}`}></div>
+  <div class="intro__photo" style={photoStyle}></div>
   <div class="intro__inner">
     <button type="button" class="intro__close" data-intro-close aria-label="Close">
       <Icon name="close" size={20} />
