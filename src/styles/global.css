@@ -185,8 +185,7 @@ section[id]{scroll-margin-top:calc(var(--header-h) + 8px)}
 }
 .grad-school{font-weight:700;font-size:.92rem}
 .prior-degree{
-  background:var(--sand);border-left:4px solid var(--navy);padding:13px 16px;
-  border-radius:0 var(--r-sm) var(--r-sm) 0;font-size:.9rem;margin-top:14px;color:var(--ink);
+  font-size:.85rem;margin-top:10px;color:var(--muted);
 }
 
 /* celebration */

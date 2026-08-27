@@ -6,13 +6,13 @@ const grads = [
   {
     name: 'Kylie',
     degree: 'M.Ed. · School Counseling',
-    prior: 'Already holds a BA in Psychology (minor in Criminology), also from UofA.',
+    prior: 'BA in Psychology, minor in Criminology, UofA',
     img: 'grad-kylie.jpg',
   },
   {
     name: 'Austin',
     degree: 'B.S. · Business Management',
-    prior: 'Already holds a BS in MIS, also from UofA.',
+    prior: 'BS in MIS, UofA',
     img: 'grad-austin.jpg',
   },
 ];
@@ -35,7 +35,7 @@ const MAP_EMBED_SRC = 'https://www.google.com/maps?q=55+N+Park+Ave,+Tucson,+AZ+8
             <h3>{g.name}</h3>
             <div class="degree">{g.degree}</div>
             <div class="grad-school">University of Arizona · Spring 2027</div>
-            <div class="prior-degree">{g.prior}</div>
+            <div class="prior-degree">Also: {g.prior}</div>
           </div>
         </article>
       ))}
@@ -48,7 +48,6 @@ const MAP_EMBED_SRC = 'https://www.google.com/maps?q=55+N+Park+Ave,+Tucson,+AZ+8
     <div class="section__head" data-reveal>
       <div class="eyebrow"><Icon name="sparkle" size={15} /> The weekend</div>
       <h2>The celebration</h2>
-      <p>Two days, two very different vibes — come for the cap and gown, stay for the pool.</p>
     </div>
     <div class="event-grid">
       <article class="card event-card" data-reveal>
@@ -198,7 +197,7 @@ const MAP_EMBED_SRC = 'https://www.google.com/maps?q=55+N+Park+Ave,+Tucson,+AZ+8
       </details>
       <details>
         <summary>Do I need to RSVP?</summary>
-        <p>Yes please — it helps us plan food and headcount. You can resubmit anytime if your plans change.</p>
+        <p>Yes please, by May 1 — it helps us plan food and headcount. You can resubmit anytime if your plans change.</p>
       </details>
     </div>
   </div>

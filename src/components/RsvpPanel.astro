@@ -9,18 +9,17 @@ const FORMSPREE_ID = 'xzebpgyj';
   <div class="rsvp__card">
     <form id="rsvp-form" action={`https://formspree.io/f/${FORMSPREE_ID}`} method="POST">
       <h2>RSVP</h2>
-      <p class="lead">One RSVP covers your whole group. Resubmit anytime if plans change.</p>
+      <p class="lead">One RSVP covers your whole group. Please RSVP by May 1. Resubmit anytime if plans change.</p>
       <input type="hidden" name="_subject" value="New graduation RSVP" />
 
-      <div class="field-row">
-        <div class="field">
-          <label for="rsvp-name">Your name</label>
-          <input type="text" id="rsvp-name" name="name" required />
-        </div>
-        <div class="field">
-          <label for="rsvp-email">Email</label>
-          <input type="email" id="rsvp-email" name="email" required />
-        </div>
+      <div class="field">
+        <label for="rsvp-name">Your name</label>
+        <input type="text" id="rsvp-name" name="name" required />
+      </div>
+
+      <div class="field">
+        <label for="rsvp-address">Mailing address</label>
+        <textarea id="rsvp-address" name="address" required placeholder={'123 Main St\nCity, State ZIP'}></textarea>
       </div>
 
       <div class="field">
