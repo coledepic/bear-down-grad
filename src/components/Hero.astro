@@ -1,47 +1,34 @@
 ---
-interface CTA { text: string; href: string; }
-interface CrossLink { text: string; href: string; }
-
 interface Props {
   kicker: string;
   headingTop: string;
-  headingRed: string;
-  sub: string;
-  pills: string[];
-  ctaPrimary: CTA;
-  ctaSecondary: CTA;
-  /** filename under /public/images/, e.g. "hero-kylie.jpg" — optional, falls back to a gradient */
-  bgImage?: string;
-  crossLink?: CrossLink;
+  headingAccent: string;
+  welcome: string;
+  /** filename under /public/images/, e.g. "hero-kylie.jpg" — falls back to a navy gradient if missing */
+  bgImage: string;
 }
-
-const { kicker, headingTop, headingRed, sub, pills, ctaPrimary, ctaSecondary, bgImage, crossLink } = Astro.props;
-const base = import.meta.env.BASE_URL;
-const bgUrl = bgImage ? `${base}images/${bgImage}` : null;
+const { kicker, headingTop, headingAccent, welcome, bgImage } = Astro.props;
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 ---
-<header class="hero" id="top">
-  <div class="hero-bg" style={bgUrl ? `background-image:url('${bgUrl}')` : undefined}></div>
-  <div class="container hero-content">
-    <span class="kicker">{kicker}</span>
-    <h1>{headingTop}<br><span class="red">{headingRed}</span></h1>
-    <p class="hero-sub">{sub}</p>
-    <div class="hero-meta">
-      {pills.map((p) => <span class="pill">{p}</span>)}
+<section class="hero" data-reveal>
+  <div class="hero__bg" style={`background-image:url('${base}/images/${bgImage}')`}></div>
+  <div class="hero__content">
+    <span class="hero__kicker">{kicker}</span>
+    <h1 class="hero__title">{headingTop}<br><span class="accent">{headingAccent}</span></h1>
+    <p class="hero__welcome">{welcome}</p>
+    <div class="hero__pills">
+      <span class="pill">Fri, May 14 · Commencement</span>
+      <span class="pill">Sat, May 15 · The Party</span>
     </div>
-    <div class="cta-row">
-      <a class="btn btn-primary" href={ctaPrimary.href}>{ctaPrimary.text} →</a>
-      <a class="btn btn-light" href={ctaSecondary.href}>{ctaSecondary.text}</a>
-    </div>
-    {crossLink && (
-      <p style="margin-top:18px;color:#dbe1e8;font-weight:700">
-        Also graduating this weekend: <a href={crossLink.href} style="color:#fff;text-decoration:underline">{crossLink.text} →</a>
-      </p>
-    )}
     <div class="countdown" aria-label="Countdown to commencement">
       <div class="count-box"><b id="days">—</b><span>Days</span></div>
       <div class="count-box"><b id="hours">—</b><span>Hours</span></div>
       <div class="count-box"><b id="mins">—</b><span>Minutes</span></div>
       <div class="count-box"><b id="secs">—</b><span>Seconds</span></div>
     </div>
+    <div class="hero__cta">
+      <a class="btn btn-primary" href="#rsvp" data-goto="rsvp">RSVP</a>
+      <button type="button" class="see-details" data-goto="details">See the details →</button>
+    </div>
   </div>
-</header>
+</section>

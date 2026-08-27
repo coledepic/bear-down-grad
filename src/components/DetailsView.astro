@@ -1,0 +1,173 @@
+---
+interface Props {
+  /** bold/lead one graduate's card in the "Meet the graduates" section */
+  featured?: 'kylie' | 'austin';
+}
+const { featured } = Astro.props;
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+
+const kylie = {
+  key: 'kylie' as const,
+  name: 'K Y L I E',
+  degree: 'M.Ed. · School Counseling',
+  prior: 'Already holds a BA in Psychology (minor in Criminology), also from UofA.',
+  img: 'grad-kylie.jpg',
+};
+const austin = {
+  key: 'austin' as const,
+  name: 'A U S T I N',
+  degree: 'B.S. · Business Management',
+  prior: 'Already holds a BS in MIS, also from UofA.',
+  img: 'grad-austin.jpg',
+};
+const gradCards = featured === 'austin' ? [austin, kylie] : [kylie, austin];
+
+// Placeholder single-pin embed — swap for a real Google My Maps embed once created.
+// See public/images/README.md / project README for the exact pin list + setup steps.
+const MAP_EMBED_SRC = 'https://www.google.com/maps?q=55+N+Park+Ave,+Tucson,+AZ+85719&output=embed';
+---
+<div class="wide">
+
+<section class="section" id="graduates" data-reveal>
+  <div class="section__head">
+    <div class="eyebrow">Class of 2027</div>
+    <h2>Meet the graduates.</h2>
+  </div>
+  <div class="grads">
+    {gradCards.map((g) => (
+      <article class={`grad-card ${featured === g.key ? 'featured' : ''}`}>
+        <div class="grad-photo" style={`background-image:url('${base}/images/${g.img}')`}></div>
+        <div class="grad-body">
+          <div class="eyebrow">Graduate</div>
+          <h3>{g.name}</h3>
+          <div class="degree">{g.degree}</div>
+          <p><strong>University of Arizona · Spring 2027</strong></p>
+          <div class="prior-degree">{g.prior}</div>
+        </div>
+      </article>
+    ))}
+  </div>
+</section>
+
+<section class="section" id="celebration" data-reveal>
+  <div class="section__head">
+    <div class="eyebrow">The weekend</div>
+    <h2>The Celebration</h2>
+  </div>
+  <div class="celebration-grid">
+    <article class="card celebration-card">
+      <div class="when">Friday, May 14 · 7:30 PM</div>
+      <h3>🎓 University Commencement</h3>
+      <p>Casino Del Sol Stadium — come watch the Class of 2027 walk across the stage!</p>
+    </article>
+    <article class="card celebration-card">
+      <div class="when">Saturday, May 15 · Time TBD</div>
+      <h3>🎉 The Party — at our place</h3>
+      <p>The Mark Tucson. Pool · food · drinks · music · photos.</p>
+      <div class="dress-tags">
+        <span>Pool party</span><span>Arizona casual</span><span>Swimsuits welcome</span>
+      </div>
+    </article>
+  </div>
+</section>
+
+<section class="section" id="stay" data-reveal>
+  <div class="section__head">
+    <div class="eyebrow">Where to stay</div>
+    <h2>Find a place near campus</h2>
+  </div>
+  <div class="card stay-card">
+    <p>Staying close to campus puts you within easy reach of both Friday's commencement and
+    Saturday's party at our place. <a href="#map" data-goto="details">Check the map below ↓</a> for exact locations.</p>
+  </div>
+</section>
+
+<section class="section" id="travel" data-reveal>
+  <div class="section__head">
+    <div class="eyebrow">Getting here</div>
+    <h2>Getting to Tucson</h2>
+  </div>
+  <div class="travel-grid">
+    <article class="card travel-card">
+      <div class="code">TUS</div>
+      <h4>✈️ Fly into TUS</h4>
+      <p>Tucson International — the closest option. Best if you don't want to drive from Phoenix.</p>
+    </article>
+    <article class="card travel-card">
+      <div class="code">PHX</div>
+      <h4>✈️ Fly into PHX</h4>
+      <p>Phoenix Sky Harbor — more flights and potentially better prices. Best for Oregon family and
+      anyone who finds a significantly cheaper flight. ~2 hours to Tucson; rental car recommended.</p>
+    </article>
+  </div>
+  <div class="transport-row">
+    <div class="card"><h4>🚗 Rental car</h4><p>If needed as your main transportation, especially if staying farther from campus.</p></div>
+    <div class="card"><h4>🚕 Uber / Lyft</h4><p>Best if you're staying near campus and mostly going to graduation events.</p></div>
+    <div class="card"><h4>🚶 Walkable</h4><p>If you're staying near UArizona, restaurants and campus are much easier to access.</p></div>
+  </div>
+</section>
+
+<section class="section" id="things-to-do" data-reveal>
+  <div class="section__head">
+    <div class="eyebrow">If you're here for the weekend</div>
+    <h2>Things to Do</h2>
+  </div>
+  <div class="card">
+    <div class="things-list">
+      <div class="thing-row"><span class="glyph">🌵</span><div><b>See the desert</b><span>Saguaro National Park</span></div></div>
+      <div class="thing-row"><span class="glyph">🌅</span><div><b>Watch the sunset</b><span>Mount Lemmon / Gates Pass</span></div></div>
+      <div class="thing-row"><span class="glyph">🌮</span><div><b>Eat Mexican food</b></div></div>
+      <div class="thing-row"><span class="glyph">☕</span><div><b>Get coffee</b><span>Local Tucson coffee shops</span></div></div>
+      <div class="thing-row"><span class="glyph">🛍️</span><div><b>Explore</b><span>4th Ave · University Blvd · Downtown</span></div></div>
+      <div class="thing-row"><span class="glyph">🍹</span><div><b>Go out</b><span>Bars & restaurants around campus and downtown</span></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="map" data-reveal>
+  <div class="section__head">
+    <div class="eyebrow">Get oriented</div>
+    <h2>The Map</h2>
+  </div>
+  <div class="map-card">
+    <div class="map-frame">
+      <iframe src={MAP_EMBED_SRC} loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Map of Tucson locations"></iframe>
+    </div>
+    <div class="map-legend">
+      <span>🎓 University of Arizona</span><span>🏠 The Mark Tucson</span><span>✈️ TUS</span><span>✈️ PHX</span>
+      <span>🏨 Hotel areas</span><span>University Blvd</span><span>4th Ave</span><span>Mt. Lemmon</span>
+      <span>Casino Del Sol Stadium</span>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="faq" data-reveal>
+  <div class="section__head">
+    <div class="eyebrow">Good to know</div>
+    <h2>FAQ</h2>
+  </div>
+  <div class="faq">
+    <details open>
+      <summary>Is the Friday ceremony time confirmed?</summary>
+      <p>Per UArizona's official commencement page: Friday, May 14 at 7:30 PM, Casino Del Sol Stadium — the university itself marks this "subject to change," so we'll confirm again closer to the date.</p>
+    </details>
+    <details>
+      <summary>What time is Saturday's party?</summary>
+      <p>Still TBD — we'll update this page as soon as it's locked in.</p>
+    </details>
+    <details>
+      <summary>What should I wear to the party?</summary>
+      <p>Pool party / Arizona casual. Swimsuits welcome, comfortable clothes encouraged — come ready to celebrate.</p>
+    </details>
+    <details>
+      <summary>Where exactly is the party?</summary>
+      <p>The Mark Tucson — it's our apartment, so come hang out at our place!</p>
+    </details>
+    <details>
+      <summary>Do I need to RSVP?</summary>
+      <p>Yes please — it helps us plan. You can resubmit anytime if your plans change.</p>
+    </details>
+  </div>
+</section>
+
+</div>

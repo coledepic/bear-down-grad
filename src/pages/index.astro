@@ -1,22 +1,26 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Hero from '../components/Hero.astro';
-import SharedContent from '../components/SharedContent.astro';
+import RsvpPanel from '../components/RsvpPanel.astro';
+import DetailsView from '../components/DetailsView.astro';
 ---
 <BaseLayout
   title="Bear Down, We Graduated | Kylie & Austin | UArizona 2027"
-  description="Kylie and Austin's University of Arizona graduation weekend guide — May 14–16, 2027 in Tucson, Arizona."
-  activePage="both"
+  description="Kylie and Austin are graduating from the University of Arizona — May 14–16, 2027 in Tucson. RSVP and see the details."
+  ogImage="og-duo.jpg"
+  activePersona="duo"
 >
-  <Hero
-    kicker="🎓 Tucson · Arizona · Spring 2027"
-    headingTop="BEAR DOWN."
-    headingRed="WE GRADUATED."
-    sub="You're invited to Tucson! Kylie and Austin are graduating from the University of Arizona, and we'd love to have our favorite people here to celebrate with us."
-    pills={["Friday · May 14 · Commencement", "Saturday · May 15 · Grad Party", "Sunday · May 16 · Brunch / Goodbye"]}
-    ctaPrimary={{ text: "Plan the Weekend", href: "#weekend" }}
-    ctaSecondary={{ text: "Where Should I Stay?", href: "#stay" }}
-    bgImage="hero-both.jpg"
-  />
-  <SharedContent />
+  <div class="view active" data-view="rsvp">
+    <Hero
+      kicker="🎓 Tucson · Spring 2027"
+      headingTop="BEAR DOWN."
+      headingAccent="WE GRADUATED."
+      welcome="Kylie and Austin are graduating from the University of Arizona, and we'd love to have our favorite people here to celebrate with us."
+      bgImage="hero-duo.jpg"
+    />
+    <RsvpPanel />
+  </div>
+  <div class="view" data-view="details">
+    <DetailsView />
+  </div>
 </BaseLayout>

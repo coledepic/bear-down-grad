@@ -4,12 +4,19 @@ import '../styles/global.css';
 interface Props {
   title: string;
   description: string;
-  /** which nav "version" of the site is active, for the personal-page switcher */
-  activePage?: 'both' | 'kylie' | 'austin';
+  /** filename under /public/images/ used for the social/iMessage link preview, e.g. "og-kylie.jpg" */
+  ogImage: string;
+  activePersona: 'duo' | 'kylie' | 'austin';
+  contactLine?: string;
 }
 
-const { title, description, activePage = 'both' } = Astro.props;
-const base = import.meta.env.BASE_URL;
+const { title, description, ogImage, activePersona, contactLine } = Astro.props;
+// BASE_URL isn't guaranteed to have a trailing slash (it doesn't in dev) — normalize it once
+// here so every concatenation below can safely assume `${base}/something`.
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const canonicalPath = activePersona === 'duo' ? `${base}/` : `${base}/${activePersona}/`;
+const siteUrl = `https://coledepic.github.io${canonicalPath}`;
+const ogImageUrl = `https://coledepic.github.io${base}/images/${ogImage}`;
 ---
 <!DOCTYPE html>
 <html lang="en">
@@ -18,53 +25,127 @@ const base = import.meta.env.BASE_URL;
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>{title}</title>
 <meta name="description" content={description}>
-<link rel="icon" href={`${base}favicon.svg`} type="image/svg+xml">
+<link rel="canonical" href={siteUrl}>
+
+<meta property="og:type" content="website">
+<meta property="og:title" content={title}>
+<meta property="og:description" content={description}>
+<meta property="og:url" content={siteUrl}>
+<meta property="og:image" content={ogImageUrl}>
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content={title}>
+<meta name="twitter:description" content={description}>
+<meta name="twitter:image" content={ogImageUrl}>
+
+<meta name="theme-color" content="#AB0520">
+<link rel="icon" href={`${base}/favicon.svg`} type="image/svg+xml">
+<link rel="icon" href={`${base}/favicon-32.png`} type="image/png" sizes="32x32">
+<link rel="apple-touch-icon" href={`${base}/apple-touch-icon.png`}>
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Montserrat:wght@700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-<div class="topbar"><div class="container"><span>University of Arizona · Class of 2027</span><span>May 14–16, 2027 · Tucson, AZ</span></div></div>
 
-<nav>
-  <div class="container nav-inner">
-    <a class="logo" href={`${base}`}>BEAR DOWN <span>WE GRADUATED.</span></a>
-    <div class="nav-links">
-      <a href="#graduates">Graduates</a>
-      <a href="#weekend">Weekend</a>
-      <a href="#stay">Stay</a>
-      <a href="#travel">Travel</a>
-      <a href="#party">Party</a>
-      <a href="#tucson">Tucson</a>
-      <a href="#rsvp">RSVP</a>
-      <div class="nav-switch">
-        <a href={`${base}`} class={activePage === 'both' ? 'active' : ''}>Both</a>
-        <a href={`${base}kylie/`} class={activePage === 'kylie' ? 'active' : ''}>Kylie</a>
-        <a href={`${base}austin/`} class={activePage === 'austin' ? 'active' : ''}>Austin</a>
-      </div>
+<header class="site-header">
+  <div class="site-header__inner">
+    <a class="wordmark" href={`${base}/`}>Bear Down<span class="dot">.</span></a>
+    <div class="mode-toggle" role="tablist" aria-label="View">
+      <button type="button" role="tab" data-view-btn="rsvp" aria-selected="true">Invite · RSVP</button>
+      <button type="button" role="tab" data-view-btn="details" aria-selected="false">Details</button>
     </div>
   </div>
-</nav>
+</header>
 
 <main>
 <slot />
 </main>
 
-<footer>
-<div class="container footer-grid">
-  <div><h2>BEAR DOWN.<br>WE GRADUATED.</h2><p>Kylie's M.Ed. · Austin's B.S.<br>University of Arizona · Class of 2027<br>May 14–16, 2027 · Tucson, Arizona</p></div>
-  <div><h3>Helpful Links</h3><p><a href="https://commencement.arizona.edu/" target="_blank">UArizona Commencement ↗</a></p><p><a href="https://www.arizona.edu/" target="_blank">University of Arizona ↗</a></p><p><a href="https://www.visittucson.org/" target="_blank">Visit Tucson ↗</a></p></div>
-  <div><h3>This Weekend's Site</h3><p><a href={`${base}`}>Both graduates →</a></p><p><a href={`${base}kylie/`}>Kylie's page →</a></p><p><a href={`${base}austin/`}>Austin's page →</a></p></div>
-</div>
+<footer class="site-footer">
+  <div class="container">
+    <div class="sign-off">Bear Down. We Graduated. 🐾</div>
+    <p class="contact">
+      {contactLine ? contactLine : <>Questions? <a href={`${base}/`}>reach out to Kylie or Austin</a></>}
+    </p>
+    <div class="cross-links">
+      {activePersona !== 'duo' && <a href={`${base}/`}>Both graduates</a>}
+      {activePersona !== 'kylie' && <a href={`${base}/kylie/`}>Kylie's page</a>}
+      {activePersona !== 'austin' && <a href={`${base}/austin/`}>Austin's page</a>}
+    </div>
+  </div>
 </footer>
 
 <script>
-  const target = new Date("2027-05-14T19:30:00-07:00").getTime();
-  function tick(){
-    const now = Date.now(), d = Math.max(0, target - now);
-    const days = Math.floor(d/86400000), hours = Math.floor(d/3600000)%24, mins = Math.floor(d/60000)%60, secs = Math.floor(d/1000)%60;
-    const set = (id: string, v: number) => { const el = document.getElementById(id); if (el) el.textContent = id === 'days' ? String(v) : String(v).padStart(2,'0'); };
-    set('days', days); set('hours', hours); set('mins', mins); set('secs', secs);
+  // Invite/RSVP <-> Details toggle, synced to the URL hash, keyboard-accessible via ARIA tabs.
+  function initToggle() {
+    const btns = Array.from(document.querySelectorAll<HTMLButtonElement>('[data-view-btn]'));
+    const views = Array.from(document.querySelectorAll<HTMLElement>('[data-view]'));
+
+    function setView(name: string, updateHash = true) {
+      views.forEach((v) => v.classList.toggle('active', v.dataset.view === name));
+      btns.forEach((b) => b.setAttribute('aria-selected', String(b.dataset.viewBtn === name)));
+      if (updateHash) history.replaceState(null, '', name === 'details' ? '#details' : '#rsvp');
+    }
+
+    btns.forEach((b) => b.addEventListener('click', () => setView(b.dataset.viewBtn!)));
+    document.querySelectorAll<HTMLElement>('[data-goto]').forEach((el) => {
+      el.addEventListener('click', (e) => {
+        e.preventDefault();
+        setView(el.dataset.goto!);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+    });
+
+    setView(window.location.hash === '#details' ? 'details' : 'rsvp', false);
+  }
+  initToggle();
+
+  // Scroll-reveal for detail sections.
+  const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const revealTargets = document.querySelectorAll<HTMLElement>('[data-reveal]');
+  if (prefersReduced) {
+    revealTargets.forEach((el) => el.classList.add('revealed'));
+  } else {
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('revealed');
+            io.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.12 }
+    );
+    revealTargets.forEach((el) => io.observe(el));
+  }
+
+  // Countdown to Friday commencement, 7:30 PM.
+  const target = new Date('2027-05-14T19:30:00-07:00').getTime();
+  const prev: Record<string, string> = {};
+  function tick() {
+    const now = Date.now();
+    const d = Math.max(0, target - now);
+    const days = Math.floor(d / 86400000);
+    const hours = Math.floor(d / 3600000) % 24;
+    const mins = Math.floor(d / 60000) % 60;
+    const secs = Math.floor(d / 1000) % 60;
+    const values: Record<string, number> = { days, hours, mins, secs };
+    for (const id of ['days', 'hours', 'mins', 'secs']) {
+      const el = document.getElementById(id);
+      if (!el) continue;
+      const text = id === 'days' ? String(values[id]) : String(values[id]).padStart(2, '0');
+      if (prev[id] !== text) {
+        el.textContent = text;
+        if (prev[id] !== undefined && !prefersReduced) {
+          el.classList.remove('tick');
+          void el.offsetWidth;
+          el.classList.add('tick');
+        }
+        prev[id] = text;
+      }
+    }
   }
   tick();
   setInterval(tick, 1000);
