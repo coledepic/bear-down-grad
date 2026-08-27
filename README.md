@@ -1,46 +1,56 @@
-# Bear Down, We Graduated 🎓
+# Bear Down, We're Graduating
 
-Kylie & Austin's UArizona 2027 graduation invite site. Three shareable landing pages, each an
-**Invite · RSVP** view (default) with a **Details** view one tap away via the sticky toggle in
-the header:
+Kylie & Austin's UArizona 2027 graduation invite site.
 
-- `/` — combined page (for people who know both of them)
-- `/kylie/` — Kylie's personal page
-- `/austin/` — Austin's personal page
+**It is one site, not three.** All three URLs serve identical content in a single continuous
+scroll (hero → RSVP → details). The only difference is that the two personal links open with a
+full-screen intro overlay spotlighting that graduate, which dismisses into the same shared site:
 
-v1 (the itinerary-style rebuild of the original mockup) is preserved at the git tag
-`v1-mockup-rebuild` if you ever want to look back at it (`git show v1-mockup-rebuild:README.md`,
-or `git checkout v1-mockup-rebuild` to browse it fully).
+| Link | What's different |
+|---|---|
+| `/` | No overlay — the plain shared site. Send to people who know them both. |
+| `/kylie/` | Opens with Kylie's intro overlay, then the same site. |
+| `/austin/` | Opens with Austin's intro overlay, then the same site. |
+
+The overlay shows once per browsing session (tracked in `sessionStorage`). Add `?intro` to any
+personal link to force it to show again when previewing — e.g. `/kylie/?intro`.
+
+Separate routes (rather than one page with a `?for=` parameter) exist so each link can carry its
+own iMessage/social preview image and title — crawlers read static HTML per URL.
+
+Earlier versions are preserved as git tags: `v1-mockup-rebuild` (the itinerary-style first pass).
 
 ## Before sending this out
 
 1. **Add real photos.** See `public/images/README.md` for exact filenames — drop photos in, no
-   code changes needed. Until then, hero/grad-card spots show a navy gradient (not a broken
-   image).
-2. **Turn on the RSVP form.** It posts to [Formspree](https://formspree.io) (free — no backend,
-   no database, responses land in your email + a Formspree dashboard/CSV export).
-   - Sign up free at formspree.io, create a new form.
-   - Copy your form ID (`https://formspree.io/f/XXXXXXXX` — the `XXXXXXXX` part).
-   - Open `src/components/RsvpPanel.astro`, find `const FORMSPREE_ID = 'YOUR_FORM_ID';` near the
-     top, paste your real ID in. One shared component, one edit covers all three pages.
+   code changes needed. Until then, hero/intro/grad-card spots show a navy gradient (not a broken
+   image). The design leans hard on these, so it will look markedly better once they're in.
+2. ~~Turn on the RSVP form.~~ Done — it posts to Formspree form `xzebpgyj`. Submissions land in
+   the Formspree dashboard + notification email. Nothing is stored by this site itself.
 3. **Wire up the real map.** See "The map" section in `public/images/README.md` — needs a quick
    Google My Maps setup (free, ~5 minutes) since a plain embed only supports one pin.
-4. **Fill in what's still TBD** — Saturday's party time (`src/components/DetailsView.astro`), and
-   an RSVP deadline / contact info if you want them (footer `contactLine` prop, passed from each
-   page file).
+4. **Fill in what's still TBD** — Saturday's party time (`src/components/Details.astro`), and an
+   RSVP deadline / contact line if you want them (the `contactLine` prop, passed from each page
+   file into `BaseLayout`).
 
 ## Editing
 
-- **Shared Details content** (graduates, celebration, stay, travel, things to do, map, FAQ) — all
-  in `src/components/DetailsView.astro`. Edit once, it updates on all three pages.
+- **All the detail sections** (graduates, celebration, stay, travel, things to do, map, FAQ) —
+  `src/components/Details.astro`. Edit once, it updates everywhere.
+- **Hero** (headline, welcome line, date pills) — `src/components/Hero.astro`. Shared by all three
+  URLs, since it's one site.
+- **The personal intro overlays** — `src/components/PersonaIntro.astro` for behavior/markup; the
+  per-person name, degree, message and photo are props passed from `src/pages/kylie.astro` and
+  `src/pages/austin.astro`.
 - **RSVP form fields** — `src/components/RsvpPanel.astro`.
-- **Personalized hero** (headline, welcome line, background photo) — in each page file:
-  `src/pages/index.astro`, `src/pages/kylie.astro`, `src/pages/austin.astro`, via props passed to
-  `<Hero>`.
-- **Header/footer, the Invite↔Details toggle, meta/OG tags, the countdown** —
-  `src/layouts/BaseLayout.astro`.
+- **Header/footer, meta + OG tags, the countdown** — `src/layouts/BaseLayout.astro`.
+- **Icons** — `src/components/Icon.astro`, a small hand-authored stroke set (no icon library).
+  Add new ones in the same style; use `<Icon name="..." />`.
 - **Colors/fonts/spacing/animations** — `src/styles/global.css` (mobile-first: base rules target
   small screens, `@media (min-width: ...)` blocks layer on tablet/desktop enhancements).
+
+Everything respects `prefers-reduced-motion` — the marquee, scroll reveals, countdown ticks and
+confetti all disable for visitors who ask for reduced motion.
 
 ## Local development
 

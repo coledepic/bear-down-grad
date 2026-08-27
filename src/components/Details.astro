@@ -1,0 +1,205 @@
+---
+import Icon from './Icon.astro';
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+
+const grads = [
+  {
+    name: 'Kylie',
+    degree: 'M.Ed. · School Counseling',
+    prior: 'Already holds a BA in Psychology (minor in Criminology), also from UofA.',
+    img: 'grad-kylie.jpg',
+  },
+  {
+    name: 'Austin',
+    degree: 'B.S. · Business Management',
+    prior: 'Already holds a BS in MIS, also from UofA.',
+    img: 'grad-austin.jpg',
+  },
+];
+
+// Placeholder single-pin embed. Swap for a real Google My Maps embed URL — the full
+// pin list and setup steps are in public/images/README.md.
+const MAP_EMBED_SRC = 'https://www.google.com/maps?q=55+N+Park+Ave,+Tucson,+AZ+85719&output=embed';
+---
+<section class="section" id="graduates">
+  <div class="wide">
+    <div class="section__head" data-reveal>
+      <div class="eyebrow"><Icon name="users" size={15} /> Class of 2027</div>
+      <h2>Meet the graduates</h2>
+    </div>
+    <div class="grads">
+      {grads.map((g) => (
+        <article class="grad-card" data-reveal>
+          <div class="grad-photo" style={`background-image:url('${base}/images/${g.img}')`}></div>
+          <div class="grad-body">
+            <h3>{g.name}</h3>
+            <div class="degree">{g.degree}</div>
+            <div class="grad-school">University of Arizona · Spring 2027</div>
+            <div class="prior-degree">{g.prior}</div>
+          </div>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>
+
+<section class="section band-navy" id="celebration">
+  <div class="wide">
+    <div class="section__head" data-reveal>
+      <div class="eyebrow"><Icon name="sparkle" size={15} /> The weekend</div>
+      <h2>The celebration</h2>
+      <p>Two days, two very different vibes — come for the cap and gown, stay for the pool.</p>
+    </div>
+    <div class="event-grid">
+      <article class="card event-card" data-reveal>
+        <div class="icon-badge"><Icon name="cap" /></div>
+        <div class="when">Friday, May 14 · 7:30 PM</div>
+        <h3>University Commencement</h3>
+        <div class="where">Casino Del Sol Stadium</div>
+        <p>Come watch the Class of 2027 walk across the stage.</p>
+      </article>
+      <article class="card event-card" data-reveal>
+        <div class="icon-badge"><Icon name="sparkle" /></div>
+        <div class="when">Saturday, May 15 · Time TBD</div>
+        <h3>The party — at our place</h3>
+        <div class="where">The Mark Tucson</div>
+        <p>Pool, food, drinks, music and photos. Swimsuits welcome.</p>
+        <div class="tags"><span>Pool party</span><span>Arizona casual</span><span>Come hungry</span></div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="stay">
+  <div class="wide">
+    <div class="section__head" data-reveal>
+      <div class="eyebrow"><Icon name="bed" size={15} /> Where to stay</div>
+      <h2>Stay near campus</h2>
+    </div>
+    <div class="split">
+      <div class="card mini-card" data-reveal>
+        <div class="icon-badge"><Icon name="bed" size={20} /></div>
+        <div>
+          <h4>Anywhere close to the University works</h4>
+          <p>It puts you within easy reach of both Friday's ceremony and Saturday's party — and
+          it's the most walkable part of town for restaurants and coffee.</p>
+        </div>
+      </div>
+      <div class="card mini-card" data-reveal>
+        <div class="icon-badge"><Icon name="pin" size={20} /></div>
+        <div>
+          <h4>Not sure how it all fits together?</h4>
+          <p>The map further down shows campus, the ceremony, the party and the airports in
+          relation to each other.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section band-sand" id="travel">
+  <div class="wide">
+    <div class="section__head" data-reveal>
+      <div class="eyebrow"><Icon name="plane" size={15} /> Getting here</div>
+      <h2>Getting to Tucson</h2>
+    </div>
+    <div class="split" style="margin-bottom:16px">
+      <article class="card travel-card" data-reveal>
+        <div class="code">TUS</div>
+        <h4>Fly into Tucson</h4>
+        <p>Tucson International — the closest option. Best if you'd rather not drive from Phoenix.</p>
+      </article>
+      <article class="card travel-card" data-reveal>
+        <div class="code">PHX</div>
+        <h4>Fly into Phoenix</h4>
+        <p>Sky Harbor — more flights and potentially better prices. Best for Oregon family and
+        anyone who finds a significantly cheaper fare. About a 2-hour drive down; rental car recommended.</p>
+      </article>
+    </div>
+    <div class="split">
+      <div class="card mini-card" data-reveal>
+        <div class="icon-badge"><Icon name="car" size={20} /></div>
+        <div><h4>Rental car</h4><p>Easiest if you're staying farther from campus or flying into Phoenix.</p></div>
+      </div>
+      <div class="card mini-card" data-reveal>
+        <div class="icon-badge"><Icon name="pin" size={20} /></div>
+        <div><h4>Uber / Lyft</h4><p>Great if you're near campus and mostly moving between events.</p></div>
+      </div>
+      <div class="card mini-card" data-reveal>
+        <div class="icon-badge"><Icon name="walk" size={20} /></div>
+        <div><h4>On foot</h4><p>Stay near UArizona and most restaurants and campus are walkable.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="things-to-do">
+  <div class="wide">
+    <div class="section__head" data-reveal>
+      <div class="eyebrow"><Icon name="cactus" size={15} /> If you're here for the weekend</div>
+      <h2>Do Tucson things</h2>
+    </div>
+    <div class="card" data-reveal>
+      <div class="things-list">
+        <div class="thing-row"><div class="icon-badge"><Icon name="cactus" size={19} /></div><div><b>See the desert</b><span>Saguaro National Park</span></div></div>
+        <div class="thing-row"><div class="icon-badge"><Icon name="mountain" size={19} /></div><div><b>Watch the sunset</b><span>Mount Lemmon or Gates Pass</span></div></div>
+        <div class="thing-row"><div class="icon-badge"><Icon name="utensils" size={19} /></div><div><b>Eat Mexican food</b><span>Tucson is a UNESCO City of Gastronomy</span></div></div>
+        <div class="thing-row"><div class="icon-badge"><Icon name="coffee" size={19} /></div><div><b>Get coffee</b><span>Local Tucson coffee shops</span></div></div>
+        <div class="thing-row"><div class="icon-badge"><Icon name="bag" size={19} /></div><div><b>Explore</b><span>4th Ave · University Blvd · Downtown</span></div></div>
+        <div class="thing-row"><div class="icon-badge"><Icon name="glass" size={19} /></div><div><b>Go out</b><span>Bars and restaurants around campus and downtown</span></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section band-sand" id="map">
+  <div class="wide">
+    <div class="section__head" data-reveal>
+      <div class="eyebrow"><Icon name="pin" size={15} /> Get oriented</div>
+      <h2>The map</h2>
+    </div>
+    <div class="map-card" data-reveal>
+      <div class="map-frame">
+        <iframe src={MAP_EMBED_SRC} loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Map of key Tucson locations"></iframe>
+      </div>
+      <div class="map-legend">
+        <span>University of Arizona</span><span>The Mark Tucson</span><span>Casino Del Sol Stadium</span>
+        <span>TUS</span><span>PHX</span><span>Hotel areas</span>
+        <span>University Blvd</span><span>4th Ave</span><span>Mt. Lemmon</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="faq">
+  <div class="wide">
+    <div class="section__head" data-reveal>
+      <div class="eyebrow"><Icon name="help" size={15} /> Good to know</div>
+      <h2>Questions</h2>
+    </div>
+    <div class="faq" data-reveal>
+      <details open>
+        <summary>Is the Friday ceremony time confirmed?</summary>
+        <p>UArizona's official commencement page lists Friday, May 14 at 7:30 PM at Casino Del Sol
+        Stadium — and marks it "subject to change," so we'll confirm again closer to the date.</p>
+      </details>
+      <details>
+        <summary>What time is Saturday's party?</summary>
+        <p>Still being finalized — we'll update this page as soon as it's locked in.</p>
+      </details>
+      <details>
+        <summary>What should I wear?</summary>
+        <p>Saturday is a pool party, so Arizona casual. Swimsuits welcome, comfortable clothes
+        encouraged. Friday's ceremony is outdoors in the evening.</p>
+      </details>
+      <details>
+        <summary>Where exactly is the party?</summary>
+        <p>The Mark Tucson — it's our apartment, so you're coming to our place.</p>
+      </details>
+      <details>
+        <summary>Do I need to RSVP?</summary>
+        <p>Yes please — it helps us plan food and headcount. You can resubmit anytime if your plans change.</p>
+      </details>
+    </div>
+  </div>
+</section>

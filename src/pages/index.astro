@@ -2,25 +2,14 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Hero from '../components/Hero.astro';
 import RsvpPanel from '../components/RsvpPanel.astro';
-import DetailsView from '../components/DetailsView.astro';
+import Details from '../components/Details.astro';
 ---
 <BaseLayout
-  title="Bear Down, We Graduated | Kylie & Austin | UArizona 2027"
+  title="Bear Down, We're Graduating | Kylie & Austin | UArizona 2027"
   description="Kylie and Austin are graduating from the University of Arizona — May 14–16, 2027 in Tucson. RSVP and see the details."
   ogImage="og-duo.jpg"
-  activePersona="duo"
 >
-  <div class="view active" data-view="rsvp">
-    <Hero
-      kicker="🎓 Tucson · Spring 2027"
-      headingTop="BEAR DOWN."
-      headingAccent="WE GRADUATED."
-      welcome="Kylie and Austin are graduating from the University of Arizona, and we'd love to have our favorite people here to celebrate with us."
-      bgImage="hero-duo.jpg"
-    />
-    <RsvpPanel />
-  </div>
-  <div class="view" data-view="details">
-    <DetailsView />
-  </div>
+  <Hero />
+  <RsvpPanel />
+  <Details />
 </BaseLayout>

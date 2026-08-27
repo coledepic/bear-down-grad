@@ -1,26 +1,27 @@
 ---
+// Same site as `/` — the only difference is the persona intro overlay that greets
+// anyone arriving on this link, and the link-preview metadata.
 import BaseLayout from '../layouts/BaseLayout.astro';
+import PersonaIntro from '../components/PersonaIntro.astro';
 import Hero from '../components/Hero.astro';
 import RsvpPanel from '../components/RsvpPanel.astro';
-import DetailsView from '../components/DetailsView.astro';
+import Details from '../components/Details.astro';
 ---
 <BaseLayout
   title="Austin's Graduation | UArizona 2027"
   description="Austin is graduating from the University of Arizona — May 14–16, 2027 in Tucson. RSVP and see the details."
   ogImage="og-austin.jpg"
-  activePersona="austin"
+  route="austin"
 >
-  <div class="view active" data-view="rsvp">
-    <Hero
-      kicker="🎓 Austin's Graduation"
-      headingTop="AUSTIN'S"
-      headingAccent="GRADUATION."
-      welcome="I'm graduating from the University of Arizona with my B.S. in Business Management, and I'd love for you to be in Tucson to celebrate with me."
-      bgImage="hero-austin.jpg"
-    />
-    <RsvpPanel />
-  </div>
-  <div class="view" data-view="details">
-    <DetailsView featured="austin" />
-  </div>
+  <PersonaIntro
+    slot="intro"
+    persona="austin"
+    name="Austin"
+    degree="B.S. Business Management"
+    line="I'm graduating with my B.S. in Business Management — my second degree from the U of A — and I'd love for you to be in Tucson to celebrate with me."
+    photo="hero-austin.jpg"
+  />
+  <Hero />
+  <RsvpPanel />
+  <Details />
 </BaseLayout>

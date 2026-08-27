@@ -1,24 +1,19 @@
 ---
-interface Props {
-  kicker: string;
-  headingTop: string;
-  headingAccent: string;
-  welcome: string;
-  /** filename under /public/images/, e.g. "hero-kylie.jpg" — falls back to a navy gradient if missing */
-  bgImage: string;
-}
-const { kicker, headingTop, headingAccent, welcome, bgImage } = Astro.props;
+import Icon from './Icon.astro';
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 ---
-<section class="hero" data-reveal>
-  <div class="hero__bg" style={`background-image:url('${base}/images/${bgImage}')`}></div>
+<section class="hero" id="top">
+  <div class="hero__bg" style={`background-image:url('${base}/images/hero-duo.jpg')`}></div>
   <div class="hero__content">
-    <span class="hero__kicker">{kicker}</span>
-    <h1 class="hero__title">{headingTop}<br><span class="accent">{headingAccent}</span></h1>
-    <p class="hero__welcome">{welcome}</p>
+    <span class="hero__kicker"><Icon name="cap" size={15} /> Tucson · Spring 2027</span>
+    <h1 class="hero__title">Bear Down.<span class="accent">We're Graduating.</span></h1>
+    <p class="hero__welcome">
+      Kylie and Austin are graduating from the University of Arizona, and we'd love to have
+      our favorite people here to celebrate with us.
+    </p>
     <div class="hero__pills">
-      <span class="pill">Fri, May 14 · Commencement</span>
-      <span class="pill">Sat, May 15 · The Party</span>
+      <span class="pill"><Icon name="cap" size={15} /> Fri, May 14 · Commencement</span>
+      <span class="pill"><Icon name="sparkle" size={15} /> Sat, May 15 · The Party</span>
     </div>
     <div class="countdown" aria-label="Countdown to commencement">
       <div class="count-box"><b id="days">—</b><span>Days</span></div>
@@ -27,8 +22,19 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       <div class="count-box"><b id="secs">—</b><span>Seconds</span></div>
     </div>
     <div class="hero__cta">
-      <a class="btn btn-primary" href="#rsvp" data-scroll-to="rsvp">RSVP</a>
-      <button type="button" class="see-details" data-goto="details">See the details →</button>
+      <a class="btn btn-primary" href="#rsvp">RSVP <Icon name="right" size={18} /></a>
+      <a class="scroll-cue" href="#graduates">See the details <Icon name="down" size={17} /></a>
     </div>
   </div>
 </section>
+
+<div class="marquee" aria-hidden="true">
+  <div class="marquee__track">
+    <span>Bear Down</span><span>★</span><span>Class of 2027</span><span>★</span>
+    <span>Kylie &amp; Austin</span><span>★</span><span>Tucson, Arizona</span><span>★</span>
+    <span>May 14–16</span><span>★</span>
+    <span>Bear Down</span><span>★</span><span>Class of 2027</span><span>★</span>
+    <span>Kylie &amp; Austin</span><span>★</span><span>Tucson, Arizona</span><span>★</span>
+    <span>May 14–16</span><span>★</span>
+  </div>
+</div>

@@ -1,21 +1,22 @@
 ---
 import '../styles/global.css';
+import Icon from './../components/Icon.astro';
 
 interface Props {
   title: string;
   description: string;
-  /** filename under /public/images/ used for the social/iMessage link preview, e.g. "og-kylie.jpg" */
+  /** filename under /public/images/ used for the social/iMessage link preview */
   ogImage: string;
-  activePersona: 'duo' | 'kylie' | 'austin';
+  /** which URL this is, for canonical + OG tags. '' = the duo/root page. */
+  route?: '' | 'kylie' | 'austin';
   contactLine?: string;
 }
 
-const { title, description, ogImage, activePersona, contactLine } = Astro.props;
+const { title, description, ogImage, route = '', contactLine } = Astro.props;
 // BASE_URL isn't guaranteed to have a trailing slash (it doesn't in dev) — normalize it once
 // here so every concatenation below can safely assume `${base}/something`.
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
-const canonicalPath = activePersona === 'duo' ? `${base}/` : `${base}/${activePersona}/`;
-const siteUrl = `https://coledepic.github.io${canonicalPath}`;
+const siteUrl = `https://coledepic.github.io${base}/${route ? route + '/' : ''}`;
 const ogImageUrl = `https://coledepic.github.io${base}/images/${ogImage}`;
 ---
 <!DOCTYPE html>
@@ -32,29 +33,30 @@ const ogImageUrl = `https://coledepic.github.io${base}/images/${ogImage}`;
 <meta property="og:description" content={description}>
 <meta property="og:url" content={siteUrl}>
 <meta property="og:image" content={ogImageUrl}>
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content={title}>
 <meta name="twitter:description" content={description}>
 <meta name="twitter:image" content={ogImageUrl}>
 
-<meta name="theme-color" content="#AB0520">
+<meta name="theme-color" content="#0C234B">
 <link rel="icon" href={`${base}/favicon.svg`} type="image/svg+xml">
 <link rel="icon" href={`${base}/favicon-32.png`} type="image/png" sizes="32x32">
 <link rel="apple-touch-icon" href={`${base}/apple-touch-icon.png`}>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
 
+<slot name="intro" />
+
 <header class="site-header">
   <div class="site-header__inner">
-    <a class="wordmark" href={`${base}/`}>Bear Down<span class="dot">.</span></a>
-    <div class="mode-toggle" role="tablist" aria-label="View">
-      <button type="button" role="tab" data-view-btn="rsvp" aria-selected="true">Invite · RSVP</button>
-      <button type="button" role="tab" data-view-btn="details" aria-selected="false">Details</button>
-    </div>
+    <a class="wordmark" href="#top">Bear Down<span class="dot">.</span></a>
+    <a class="header-cta" href="#rsvp">RSVP</a>
   </div>
 </header>
 
@@ -64,59 +66,20 @@ const ogImageUrl = `https://coledepic.github.io${base}/images/${ogImage}`;
 
 <footer class="site-footer">
   <div class="container">
-    <div class="sign-off">Bear Down. We Graduated. 🐾</div>
-    <p class="contact">
-      {contactLine ? contactLine : <>Questions? <a href={`${base}/`}>reach out to Kylie or Austin</a></>}
+    <div class="sign-off">Bear Down. We're Graduating.</div>
+    <p class="meta">
+      Kylie's M.Ed. · Austin's B.S.<br>
+      University of Arizona · Class of 2027<br>
+      May 14–16, 2027 · Tucson, Arizona
     </p>
-    <div class="cross-links">
-      {activePersona !== 'duo' && <a href={`${base}/`}>Both graduates</a>}
-      {activePersona !== 'kylie' && <a href={`${base}/kylie/`}>Kylie's page</a>}
-      {activePersona !== 'austin' && <a href={`${base}/austin/`}>Austin's page</a>}
-    </div>
+    {contactLine && <p class="contact">{contactLine}</p>}
   </div>
 </footer>
 
 <script>
-  // Invite/RSVP <-> Details toggle, synced to the URL hash, keyboard-accessible via ARIA tabs.
-  function initToggle() {
-    const btns = Array.from(document.querySelectorAll<HTMLButtonElement>('[data-view-btn]'));
-    const views = Array.from(document.querySelectorAll<HTMLElement>('[data-view]'));
-
-    function setView(name: string, updateHash = true) {
-      views.forEach((v) => v.classList.toggle('active', v.dataset.view === name));
-      btns.forEach((b) => b.setAttribute('aria-selected', String(b.dataset.viewBtn === name)));
-      if (updateHash) history.replaceState(null, '', name === 'details' ? '#details' : '#rsvp');
-    }
-
-    btns.forEach((b) => b.addEventListener('click', () => setView(b.dataset.viewBtn!)));
-
-    // Switch view, then jump to the top of it.
-    document.querySelectorAll<HTMLElement>('[data-goto]').forEach((el) => {
-      el.addEventListener('click', (e) => {
-        e.preventDefault();
-        setView(el.dataset.goto!);
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-      });
-    });
-
-    // Stay in this view but scroll a specific section into view. The hero's RSVP button uses
-    // this — routing it through [data-goto] made it "switch" to the view it was already on and
-    // then scroll to the top, which looked like the button did nothing at all.
-    document.querySelectorAll<HTMLElement>('[data-scroll-to]').forEach((el) => {
-      el.addEventListener('click', (e) => {
-        e.preventDefault();
-        const id = el.dataset.scrollTo!;
-        setView('rsvp');
-        document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      });
-    });
-
-    setView(window.location.hash === '#details' ? 'details' : 'rsvp', false);
-  }
-  initToggle();
-
-  // Scroll-reveal for detail sections.
   const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // Scroll-reveal for sections.
   const revealTargets = document.querySelectorAll<HTMLElement>('[data-reveal]');
   if (prefersReduced) {
     revealTargets.forEach((el) => el.classList.add('revealed'));
@@ -130,22 +93,22 @@ const ogImageUrl = `https://coledepic.github.io${base}/images/${ogImage}`;
           }
         });
       },
-      { threshold: 0.12 }
+      { threshold: 0.1 }
     );
     revealTargets.forEach((el) => io.observe(el));
   }
 
-  // Countdown to Friday commencement, 7:30 PM.
+  // Countdown to Friday commencement, 7:30 PM Tucson time.
   const target = new Date('2027-05-14T19:30:00-07:00').getTime();
   const prev: Record<string, string> = {};
   function tick() {
-    const now = Date.now();
-    const d = Math.max(0, target - now);
-    const days = Math.floor(d / 86400000);
-    const hours = Math.floor(d / 3600000) % 24;
-    const mins = Math.floor(d / 60000) % 60;
-    const secs = Math.floor(d / 1000) % 60;
-    const values: Record<string, number> = { days, hours, mins, secs };
+    const d = Math.max(0, target - Date.now());
+    const values: Record<string, number> = {
+      days: Math.floor(d / 86400000),
+      hours: Math.floor(d / 3600000) % 24,
+      mins: Math.floor(d / 60000) % 60,
+      secs: Math.floor(d / 1000) % 60,
+    };
     for (const id of ['days', 'hours', 'mins', 'secs']) {
       const el = document.getElementById(id);
       if (!el) continue;
