@@ -1,0 +1,73 @@
+---
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description: string;
+  /** which nav "version" of the site is active, for the personal-page switcher */
+  activePage?: 'both' | 'kylie' | 'austin';
+}
+
+const { title, description, activePage = 'both' } = Astro.props;
+const base = import.meta.env.BASE_URL;
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{title}</title>
+<meta name="description" content={description}>
+<link rel="icon" href={`${base}favicon.svg`} type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Montserrat:wght@700;800;900&display=swap" rel="stylesheet">
+</head>
+<body>
+<div class="topbar"><div class="container"><span>University of Arizona · Class of 2027</span><span>May 14–16, 2027 · Tucson, AZ</span></div></div>
+
+<nav>
+  <div class="container nav-inner">
+    <a class="logo" href={`${base}`}>BEAR DOWN <span>WE GRADUATED.</span></a>
+    <div class="nav-links">
+      <a href="#graduates">Graduates</a>
+      <a href="#weekend">Weekend</a>
+      <a href="#stay">Stay</a>
+      <a href="#travel">Travel</a>
+      <a href="#party">Party</a>
+      <a href="#tucson">Tucson</a>
+      <a href="#rsvp">RSVP</a>
+      <div class="nav-switch">
+        <a href={`${base}`} class={activePage === 'both' ? 'active' : ''}>Both</a>
+        <a href={`${base}kylie/`} class={activePage === 'kylie' ? 'active' : ''}>Kylie</a>
+        <a href={`${base}austin/`} class={activePage === 'austin' ? 'active' : ''}>Austin</a>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<main>
+<slot />
+</main>
+
+<footer>
+<div class="container footer-grid">
+  <div><h2>BEAR DOWN.<br>WE GRADUATED.</h2><p>Kylie's M.Ed. · Austin's B.S.<br>University of Arizona · Class of 2027<br>May 14–16, 2027 · Tucson, Arizona</p></div>
+  <div><h3>Helpful Links</h3><p><a href="https://commencement.arizona.edu/" target="_blank">UArizona Commencement ↗</a></p><p><a href="https://www.arizona.edu/" target="_blank">University of Arizona ↗</a></p><p><a href="https://www.visittucson.org/" target="_blank">Visit Tucson ↗</a></p></div>
+  <div><h3>This Weekend's Site</h3><p><a href={`${base}`}>Both graduates →</a></p><p><a href={`${base}kylie/`}>Kylie's page →</a></p><p><a href={`${base}austin/`}>Austin's page →</a></p></div>
+</div>
+</footer>
+
+<script>
+  const target = new Date("2027-05-14T19:30:00-07:00").getTime();
+  function tick(){
+    const now = Date.now(), d = Math.max(0, target - now);
+    const days = Math.floor(d/86400000), hours = Math.floor(d/3600000)%24, mins = Math.floor(d/60000)%60, secs = Math.floor(d/1000)%60;
+    const set = (id: string, v: number) => { const el = document.getElementById(id); if (el) el.textContent = id === 'days' ? String(v) : String(v).padStart(2,'0'); };
+    set('days', days); set('hours', hours); set('mins', mins); set('secs', secs);
+  }
+  tick();
+  setInterval(tick, 1000);
+</script>
+</body>
+</html>

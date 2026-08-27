@@ -1,0 +1,24 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Hero from '../components/Hero.astro';
+import SharedContent from '../components/SharedContent.astro';
+const base = import.meta.env.BASE_URL;
+---
+<BaseLayout
+  title="Austin's Graduation Weekend | UArizona 2027"
+  description="Austin's University of Arizona graduation weekend guide — May 14–16, 2027 in Tucson, Arizona."
+  activePage="austin"
+>
+  <Hero
+    kicker="🎓 Austin's Graduation Weekend"
+    headingTop="AUSTIN'S"
+    headingRed="GRADUATION."
+    sub="I'm graduating from the University of Arizona with my B.S. in Business Management — my second bachelor's degree — and I'd love for you to be in Tucson to celebrate with me."
+    pills={["Friday · May 14 · Commencement", "Saturday · May 15 · Grad Party", "Sunday · May 16 · Brunch / Goodbye"]}
+    ctaPrimary={{ text: "Plan the Weekend", href: "#weekend" }}
+    ctaSecondary={{ text: "RSVP", href: "#rsvp" }}
+    bgImage="hero-austin.jpg"
+    crossLink={{ text: "Kylie", href: `${base}kylie/` }}
+  />
+  <SharedContent featured="austin" />
+</BaseLayout>

@@ -1,0 +1,47 @@
+---
+interface CTA { text: string; href: string; }
+interface CrossLink { text: string; href: string; }
+
+interface Props {
+  kicker: string;
+  headingTop: string;
+  headingRed: string;
+  sub: string;
+  pills: string[];
+  ctaPrimary: CTA;
+  ctaSecondary: CTA;
+  /** filename under /public/images/, e.g. "hero-kylie.jpg" — optional, falls back to a gradient */
+  bgImage?: string;
+  crossLink?: CrossLink;
+}
+
+const { kicker, headingTop, headingRed, sub, pills, ctaPrimary, ctaSecondary, bgImage, crossLink } = Astro.props;
+const base = import.meta.env.BASE_URL;
+const bgUrl = bgImage ? `${base}images/${bgImage}` : null;
+---
+<header class="hero" id="top">
+  <div class="hero-bg" style={bgUrl ? `background-image:url('${bgUrl}')` : undefined}></div>
+  <div class="container hero-content">
+    <span class="kicker">{kicker}</span>
+    <h1>{headingTop}<br><span class="red">{headingRed}</span></h1>
+    <p class="hero-sub">{sub}</p>
+    <div class="hero-meta">
+      {pills.map((p) => <span class="pill">{p}</span>)}
+    </div>
+    <div class="cta-row">
+      <a class="btn btn-primary" href={ctaPrimary.href}>{ctaPrimary.text} →</a>
+      <a class="btn btn-light" href={ctaSecondary.href}>{ctaSecondary.text}</a>
+    </div>
+    {crossLink && (
+      <p style="margin-top:18px;color:#dbe1e8;font-weight:700">
+        Also graduating this weekend: <a href={crossLink.href} style="color:#fff;text-decoration:underline">{crossLink.text} →</a>
+      </p>
+    )}
+    <div class="countdown" aria-label="Countdown to commencement">
+      <div class="count-box"><b id="days">—</b><span>Days</span></div>
+      <div class="count-box"><b id="hours">—</b><span>Hours</span></div>
+      <div class="count-box"><b id="mins">—</b><span>Minutes</span></div>
+      <div class="count-box"><b id="secs">—</b><span>Seconds</span></div>
+    </div>
+  </div>
+</header>
