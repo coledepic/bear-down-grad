@@ -89,11 +89,25 @@ const ogImageUrl = `https://coledepic.github.io${base}/images/${ogImage}`;
     }
 
     btns.forEach((b) => b.addEventListener('click', () => setView(b.dataset.viewBtn!)));
+
+    // Switch view, then jump to the top of it.
     document.querySelectorAll<HTMLElement>('[data-goto]').forEach((el) => {
       el.addEventListener('click', (e) => {
         e.preventDefault();
         setView(el.dataset.goto!);
         window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+    });
+
+    // Stay in this view but scroll a specific section into view. The hero's RSVP button uses
+    // this — routing it through [data-goto] made it "switch" to the view it was already on and
+    // then scroll to the top, which looked like the button did nothing at all.
+    document.querySelectorAll<HTMLElement>('[data-scroll-to]').forEach((el) => {
+      el.addEventListener('click', (e) => {
+        e.preventDefault();
+        const id = el.dataset.scrollTo!;
+        setView('rsvp');
+        document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
       });
     });
 
